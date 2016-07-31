@@ -40,8 +40,8 @@ public class TokenLocation {
       endLineOffset = lines[lines.length - 1].length();
 
     } else {
-      this.endLine = this.startLine;
-      this.endLineOffset = this.startLineOffset + token.getValue().length();
+      endLine = this.startLine;
+      endLineOffset = startLineOffset + token.getValue().length();
     }
   }
 
