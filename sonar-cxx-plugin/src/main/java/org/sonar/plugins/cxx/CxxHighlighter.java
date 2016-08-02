@@ -65,7 +65,7 @@ public class CxxHighlighter extends SquidAstVisitor<Grammar> implements AstAndTo
       } else if (token.getType().equals(CxxTokenType.STRING)) {
         highlight(token, TypeOfText.STRING);
       } else if (token.getType().equals(CxxTokenType.CHARACTER)) {
-        highlight(token, TypeOfText.CONSTANT);
+        highlight(token, TypeOfText.STRING);
       }
 
       for (Trivia trivia : token.getTrivia()) {

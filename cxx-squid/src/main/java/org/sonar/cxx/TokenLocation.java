@@ -29,8 +29,8 @@ public class TokenLocation {
   private final int endLineOffset;
 
   public TokenLocation(Token token) {
-    this.startLine = token.getLine();
-    this.startLineOffset = token.getColumn();
+    startLine = token.getLine();
+    startLineOffset = token.getColumn();
 
     String value = token.getValue();
     String[] lines = value.split("\r\n|\n|\r", -1);
@@ -41,7 +41,7 @@ public class TokenLocation {
 
     } else {
       endLine = this.startLine;
-      endLineOffset = startLineOffset + token.getValue().length();
+      endLineOffset = startLineOffset + value.length();
     }
   }
 

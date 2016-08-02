@@ -41,7 +41,7 @@ public class CxxHighlighterTest {
   @Before
   @SuppressWarnings("unchecked")
   public void scanFile() {
-   String dir = "src/test/resources/org/sonar/plugins/cxx";
+    String dir = "src/test/resources/org/sonar/plugins/cxx";
 
     file = new File(dir, "/highlighter.cc");
     DefaultInputFile inputFile = new DefaultInputFile("moduleKey", file.getName())
@@ -49,7 +49,7 @@ public class CxxHighlighterTest {
 
     context = SensorContextTester.create(new File(dir));
     context.fileSystem().add(inputFile);
-    
+
     CxxHighlighter cxxHighlighter = new CxxHighlighter(context);
     CxxAstScanner.scanSingleFile(inputFile, context, cxxHighlighter);
   }
@@ -57,48 +57,59 @@ public class CxxHighlighterTest {
   @Test
   public void keyword() throws Exception {
 
-    checkOnRange(55,  0, 4, TypeOfText.KEYWORD); // void
-    checkOnRange(57,  3, 4, TypeOfText.KEYWORD); // auto
-    checkOnRange(59,  3, 4, TypeOfText.KEYWORD); // auto
-    checkOnRange(62,  3, 3, TypeOfText.KEYWORD); // for
-    checkOnRange(62,  7, 5, TypeOfText.KEYWORD); // const
+    checkOnRange(55, 0, 4, TypeOfText.KEYWORD);  // void
+    checkOnRange(57, 3, 4, TypeOfText.KEYWORD);  // auto
+    checkOnRange(59, 3, 4, TypeOfText.KEYWORD);  // auto
+    checkOnRange(62, 3, 3, TypeOfText.KEYWORD);  // for
+    checkOnRange(62, 7, 5, TypeOfText.KEYWORD);  // const
     checkOnRange(62, 13, 4, TypeOfText.KEYWORD); // auto
-    checkOnRange(64,  6, 2, TypeOfText.KEYWORD); // if
+    checkOnRange(64, 6, 2, TypeOfText.KEYWORD);  // if
   }
 
   @Test
   public void stringLiteral() throws Exception {
-    
-   checkOnRange(49, 19,  7, TypeOfText.STRING); // "hello"
-   checkOnRange(50, 19, 18, TypeOfText.STRING); // "hello\tworld\r\n"
+
+    checkOnRange(49, 19, 7, TypeOfText.STRING);  // "hello"
+    checkOnRange(50, 19, 18, TypeOfText.STRING); // "hello\tworld\r\n"
   }
 
   @Test
   public void character() throws Exception {
 
-    checkOnRange(46, 10, 3, TypeOfText.CONSTANT); // 'x'
-    checkOnRange(47, 10, 4, TypeOfText.CONSTANT); // '\t'
+    checkOnRange(46, 10, 3, TypeOfText.STRING); // 'x'
+    checkOnRange(47, 10, 4, TypeOfText.STRING); // '\t'
   }
-  
+
   @Test
   public void comment() throws Exception {
-//    checkOnRange(6, 0, 19, TypeOfText.COMMENT);
+    
+    check(1, 0, TypeOfText.COMMENT); /*\r\n comment\r\n*/
+    check(3, 1, TypeOfText.COMMENT);
+    
+    checkOnRange(5, 0,  2, TypeOfText.COMMENT);   //
+    checkOnRange(6, 0, 10, TypeOfText.COMMENT);   // comment
+    checkOnRange(7, 0,  2, TypeOfText.COMMENT);   //
+    
+    checkOnRange(57, 22, 10, TypeOfText.COMMENT); // comment
+    checkOnRange(58, 3, 10, TypeOfText.COMMENT);  // comment
+    checkOnRange(61, 3, 13, TypeOfText.COMMENT);  /* comment */
+    checkOnRange(64, 20, 13, TypeOfText.COMMENT); /* comment */
   }
 
   @Test
   public void number() throws Exception {
-    
+
     checkOnRange(27, 10, 1, TypeOfText.CONSTANT); //  0
     checkOnRange(28, 10, 1, TypeOfText.CONSTANT); // -1 (without minus)
     checkOnRange(29, 10, 1, TypeOfText.CONSTANT); // +1 (without plus)
-    
+
     checkOnRange(31, 14, 2, TypeOfText.CONSTANT); // 0u
     checkOnRange(32, 19, 3, TypeOfText.CONSTANT); // 1ul
-    
+
     checkOnRange(34, 9, 3, TypeOfText.CONSTANT);  // 0x0
     checkOnRange(35, 9, 3, TypeOfText.CONSTANT);  // 0b0
     checkOnRange(36, 9, 16, TypeOfText.CONSTANT); // 0b0100'1100'0110
-    
+
     checkOnRange(38, 12, 3, TypeOfText.CONSTANT); //  0.0
     checkOnRange(39, 12, 3, TypeOfText.CONSTANT); // -1.0 (without minus)
     checkOnRange(40, 12, 3, TypeOfText.CONSTANT); // +1.0 (without plus)
@@ -125,8 +136,8 @@ public class CxxHighlighterTest {
   }
 
   /**
-   * Checks the highlighting of one column. The first column of a line has index
-   * 0.
+   * Checks the highlighting of one column.
+   * The first column of a line has index 0.
    */
   private void check(int line, int column, TypeOfText expectedTypeOfText) {
     checkInternal(line, column, "", expectedTypeOfText);
