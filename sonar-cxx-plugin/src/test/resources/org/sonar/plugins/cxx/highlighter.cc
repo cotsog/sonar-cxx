@@ -61,7 +61,7 @@ void func()
    /* comment */
    for(const auto& c : str)
    {
-      if (c == 't) /* comment */
+      if (c == 't') /* comment */
       {
          iii++;
       }

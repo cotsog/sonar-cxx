@@ -74,6 +74,13 @@ public class CxxHighlighterTest {
   }
 
   @Test
+  public void character() throws Exception {
+
+    checkOnRange(46, 10, 3, TypeOfText.CONSTANT); // 'x'
+    checkOnRange(47, 10, 4, TypeOfText.CONSTANT); // '\t'
+  }
+  
+  @Test
   public void comment() throws Exception {
 //    checkOnRange(6, 0, 19, TypeOfText.COMMENT);
   }
@@ -93,8 +100,8 @@ public class CxxHighlighterTest {
     checkOnRange(36, 9, 16, TypeOfText.CONSTANT); // 0b0100'1100'0110
     
     checkOnRange(38, 12, 3, TypeOfText.CONSTANT); //  0.0
-    checkOnRange(39, 12, 3, TypeOfText.CONSTANT); // -1.0
-    checkOnRange(40, 12, 3, TypeOfText.CONSTANT); // +1.0
+    checkOnRange(39, 12, 3, TypeOfText.CONSTANT); // -1.0 (without minus)
+    checkOnRange(40, 12, 3, TypeOfText.CONSTANT); // +1.0 (without plus)
     checkOnRange(41, 12, 8, TypeOfText.CONSTANT); // 3.14E-10
   }
 
