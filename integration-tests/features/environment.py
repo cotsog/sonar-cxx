@@ -296,14 +296,21 @@ def wait_for_sonar(timeout, criteria):
     for _ in range(timeout):
         if criteria():
             return True
-        time.sleep(1)
+        time.sleep(5)
     return False
 
 
 def is_webui_up():
     try:
-        return urllib.urlopen(SONAR_URL).getcode() == 200
+        request = urllib.urlopen(SONAR_URL).getcode()
+        if request == 200
+            sys.stdout.write(GREEN + " %3i " % (request) + RESET)
+            return True
+        else
+            sys.stdout.write(RED + " %3i " % (request) + RESET)
+            return False
     except IOError:
+        sys.stdout.write(RED + " IOError " + RESET)
         return False
 
 
