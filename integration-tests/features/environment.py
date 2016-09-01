@@ -26,6 +26,8 @@ import sys
 import time
 import urllib
 import platform
+import re
+import httplib
 
 from glob import glob
 from shutil import copyfile
@@ -302,17 +304,13 @@ def wait_for_sonar(timeout, criteria):
 
 def is_webui_up():
     try:
-        request = urllib.urlopen(SONAR_URL).getcode()
-        if request == 200:
-            sys.stdout.write(GREEN + " %3i " % (request) + RESET)
+        conn = httplib.HTTPConnection(SONAR_URL)
+        conn.request("HEAD", "/")
+        if re.match("^[23]\d\d$", str(conn.getresponse().status)):
             return True
-        else:
-            sys.stdout.write(RED + " %3i " % (request) + RESET)
-            return False
-    except IOError as e:
-        sys.stdout.write(RED + str(e) + "\n" + RESET)
+    except StandardError:
         return False
-
+    return False
 
 def is_webui_down():
     try:
