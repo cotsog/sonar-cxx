@@ -309,8 +309,8 @@ def is_webui_up():
         else:
             sys.stdout.write(RED + " %3i " % (request) + RESET)
             return False
-    except IOError:
-        sys.stdout.write(RED + " IOError " + RESET)
+    except IOError e:
+        sys.stdout.write(RED + str(e) + "\n" + RESET)
         return False
 
 
